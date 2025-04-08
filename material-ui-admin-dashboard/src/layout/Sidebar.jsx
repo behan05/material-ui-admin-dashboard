@@ -16,12 +16,13 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import TuneIcon from '@mui/icons-material/Tune';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useMediaQuery, useTheme } from '@mui/material';
 
-import { useSelector } from 'react-redux';
-
-const drawerWidth = "auto";
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleSidebar } from '../redux/uiSlice';
+import { updateSNavPosition } from "../redux/settingSlice";
 
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
@@ -29,32 +30,38 @@ const menuItems = [
   { text: 'Billing', icon: <ReceiptLongIcon />, path: '/billing' },
   { text: 'Notifications', icon: <NotificationsIcon />, path: '/notifications' },
   { text: 'Profile', icon: <AccountCircleIcon />, path: '/profile' },
-  { text: 'Setting', icon: <TuneIcon />, path: '/setting' },
+  { text: 'Login', icon: <ExitToAppIcon />, path: '/login' },
+  { text: 'Sign Up', icon: <HowToRegIcon />, path: '/signup' },
 ];
 
 const Sidebar = () => {
 
+  // Redux State
+  const dispatch = useDispatch()
   const isSidebarOpen = useSelector((state) => state.ui.isSidebarOpen);
+  const currentBgColor = useSelector((state) => state.setting.defaultSidebarButtonBgColor);
+  const currentSidearBgColor = useSelector((state) => state.setting.defaultSidebarBgColor)
+  const currentNavPosition = useSelector((state) => state.setting.defaultNavPosition);
+  console.log(currentNavPosition);
+
+
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md')); // md = 900px
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Drawer
-      variant={isDesktop ? 'permanent' : 'temporary'}
-      anchor="left"
-      open={isDesktop ? true : isSidebarOpen}
-      onClose={() => { }} // optional, or you can handle it if needed for mobile
+      variant={isSmallScreen ? "temporary" : "permanent"}
+      open={isSmallScreen ? isSidebarOpen : true} // permanent always open
+      onClose={() => dispatch(toggleSidebar())}
       sx={{
-        width: drawerWidth,
-        flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          backgroundColor: '#1A2027',
-          color: 'inherit',
-          paddingTop: '64px',
-          paddingLeft: '16px',
-          paddingRight: '16px',
-        },
+          width: 220,
+          boxSizing: 'border-box',
+          background: currentSidearBgColor,
+          color: "white",
+          mt: currentNavPosition === "fixed" ? 7 : 0,
+          p: 1
+        }
       }}
     >
       <Box sx={{ p: 3 }}>
@@ -68,7 +75,7 @@ const Sidebar = () => {
           gap={1}
           sx={{ textDecoration: "none", color: "inherit" }}
         >
-          <SpaceDashboardIcon /> MUI Dashboard
+          <SpaceDashboardIcon />DASHBOARD
         </Typography>
       </Box>
       <Divider sx={{ borderColor: '#333' }} />
@@ -79,10 +86,11 @@ const Sidebar = () => {
             key={item.text}
             component={NavLink}
             to={item.path}
+            onClick={isSmallScreen ? () => dispatch(toggleSidebar()) : undefined} // close on item click
             sx={{
               color: '#fff',
               '&.active': {
-                backgroundColor: '#2D3748',
+                backgroundColor: currentBgColor,
               },
             }}
           >

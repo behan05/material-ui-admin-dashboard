@@ -1,30 +1,41 @@
 import React from 'react';
 import {
   AppBar, Box, IconButton, Toolbar, Typography,
-  Avatar, Menu, MenuItem, Drawer, Paper, InputBase, Divider, Button
+  Avatar, Menu, MenuItem, Drawer, Paper, InputBase,
+  Divider, Button, Switch
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import {
   Menu as MenuIcon, Notifications as NotificationsIcon,
   Message as MessageIcon, Podcasts as PodcastsIcon,
   ShoppingCart as ShoppingCartIcon, Settings as SettingsIcon,
-  Search as SearchIcon, Close as CloseIcon, ToggleOn as ToggleOnIcon,
+  Search as SearchIcon, Close as CloseIcon,
   Share as ShareIcon, X as XIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../redux/uiSlice';
+import {
+  updateSidebarButtonBgColor,
+  updateSidebarBgColor,
+  updateSNavPosition,
+  toggleThemeMode
+} from "../redux/settingSlice";
 
 function Navbar() {
-  const dispatch = useDispatch();
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
+  const dispatch = useDispatch();
+  const navPosition = useSelector((state) => state.setting.defaultNavPosition); // 'fixed' or 'static'
+  const isNavbarFixed = navPosition === "fixed";
+  const themeMode = useSelector((state) => state.setting.themeMode);
+
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
 
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const [anchorNotif, setAnchorNotif] = React.useState(null);
   const handleOpenNotif = (e) => setAnchorNotif(e.currentTarget);
@@ -34,10 +45,17 @@ function Navbar() {
   const handleOpenUserMenu = (e) => setAnchorUser(e.currentTarget);
   const handleCloseUserMenu = () => setAnchorUser(null);
 
-  const sidenavColors = ["#A71347", "#3a3d3f", "#0F59AC", "#377F42", "#BD6E00", "#9B1210"];
+  const sidenavColors = [
+    "#A71347", "#0F59AC", "#FF0000", "#377F42",
+    "#BD6E00", "#9B1210", "#1a8e88", "#6A1B9A",
+    "#00838F", "#2E7D32",
+  ];
 
   return (
-    <AppBar position='fixed' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar
+      position={["fixed", "static", "absolute", "relative", "sticky"].includes(navPosition) ? navPosition : "fixed"}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, bgcolor: "#151A1F" }}
+    >
       <Toolbar>
 
         {/* Left: Logo and Toggle Sidebar */}
@@ -85,7 +103,7 @@ function Navbar() {
           </Paper>
         )}
 
-        {/* Settings Drawer Button */}
+        {/* Settings Button and Drawer */}
         <Box ml={4} display="flex" alignItems="center">
           <IconButton color='inherit' onClick={handleDrawerOpen} aria-label="open settings">
             <SettingsIcon />
@@ -111,6 +129,7 @@ function Navbar() {
                 <CloseIcon />
               </IconButton>
             </Box>
+
             <Typography variant='body2' color='text.secondary'>See our dashboard options.</Typography>
             <Divider sx={{ my: 2, borderColor: '#444' }} />
 
@@ -118,11 +137,18 @@ function Navbar() {
             <Typography variant="subtitle1" gutterBottom>Sidenav Colors</Typography>
             <Box display="flex" flexWrap="wrap" gap={2}>
               {sidenavColors.map((color, i) => (
-                <Box key={i} sx={{
-                  width: 20, height: 20, borderRadius: '50%',
-                  backgroundColor: color, cursor: 'pointer',
-                  '&:hover': { border: '2px solid #ffffff' }
-                }} />
+                <Box
+                  key={i}
+                  onClick={() => dispatch(updateSidebarButtonBgColor(color))}
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    backgroundColor: color,
+                    cursor: 'pointer',
+                    '&:hover': { border: '2px solid #ffffff' }
+                  }}
+                />
               ))}
             </Box>
 
@@ -131,70 +157,98 @@ function Navbar() {
               <Typography variant="subtitle1">Sidenav Type</Typography>
               <Typography variant="body2" mb={2}>Choose between different sidenav types.</Typography>
               <Box display="flex" gap={1}>
-                {['DARK', 'TRANSPARENT', 'WHITE'].map((type, i) => (
-                  <Button
-                    key={i}
-                    variant='contained'
-                    sx={{
-                      bgcolor: "#000",
-                      borderRadius: 2,
-                      boxShadow: "0 0 0.2rem lightseagreen",
-                      "&:hover": {
-                        boxShadow: "0 2px 0.2rem lightseagreen",
-                      }
-                    }}
-                  >
-                    {type}
-                  </Button>
-                ))}
+                {['DARK', 'TRANSPARENT', 'WHITE'].map((type, i) => {
+                  let bgColor = "";
+                  if (type === 'TRANSPARENT') bgColor = "linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(173, 216, 230, 0.1))";
+                  if (type === 'WHITE') bgColor = "linear-gradient(120deg, #232526, #AAAFBA)";
+                  if (type === 'DARK') bgColor = "linear-gradient(to right,#010101, #0E0604)";
+                  return (
+                    <Button
+                      key={i}
+                      variant='outlined'
+                      onClick={() => dispatch(updateSidebarBgColor(bgColor))}
+                      sx={{
+                        background: bgColor,
+                        color: type === 'WHITE' ? '#000' : '#CCC',
+                        borderRadius: 2,
+                        boxShadow: "0 0 0.2rem lightseagreen",
+                        "&:hover": {
+                          boxShadow: "0 2px 0.2rem lightseagreen",
+                        },
+                      }}
+                    >
+                      {type}
+                    </Button>
+                  );
+                })}
               </Box>
             </Box>
 
-            {/* Toggles */}
-            {[
-              { label: "Navbar Fixed" },
-              { label: "Light / Dark" }
-            ].map((item, i) => (
-              <React.Fragment key={i}>
-                <Divider sx={{ my: 2, borderColor: '#444' }} />
-                <Box display='flex' justifyContent="space-between" alignItems="center">
-                  <Typography>{item.label}</Typography>
-                  <ToggleOnIcon sx={{ fontSize: "2.5rem" }} />
-                </Box>
-              </React.Fragment>
-            ))}
+            {/* Navbar Fixed Toggle */}
+            <Divider sx={{ my: 2, borderColor: '#444' }} />
+            <Box display='flex' justifyContent="space-between" alignItems="center">
+              <Typography>Navbar Fixed</Typography>
+              <Switch
+                checked={isNavbarFixed}
+                onChange={() =>
+                  dispatch(updateSNavPosition(isNavbarFixed ? "static" : "fixed"))
+                }
+                color="success"
+                sx={{
+                  '& .MuiSwitch-switchBase.Mui-checked': {
+                    color: '#00e676',
+                  },
+                  '& .MuiSwitch-track': {
+                    backgroundColor: '#555',
+                  }
+                }}
+              />
+            </Box>
+
+            {/* Theme Toggle */}
+            <Box display='flex' justifyContent="space-between" alignItems="center" mt={2}>
+              <Typography>Dark Mode</Typography>
+              <Switch
+                checked={themeMode === 'dark'}
+                onChange={() => dispatch(toggleThemeMode())}
+                color="success"
+                sx={{
+                  '& .MuiSwitch-switchBase.Mui-checked': {
+                    color: '#00e676',
+                  },
+                  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                    backgroundColor: '#00e676',
+                  },
+                  '& .MuiSwitch-track': {
+                    backgroundColor: '#555',
+                  },
+                }}
+              />
+            </Box>
 
             {/* Share Section */}
             <Box textAlign="center" mt={8}>
               <Typography variant="subtitle1" gutterBottom>Thank you for sharing!</Typography>
               <Box display="flex" justifyContent="center" gap={1}>
-                <Button variant='outlined' startIcon={<XIcon />}
-                  sx={{
-                    bgcolor: "#000", color: "inherit", borderRadius: 2,
-                    boxShadow: "0 0 0.2rem lightseagreen", "&:hover": {
-                      boxShadow: "0 2px 0.2rem lightseagreen"
-                    }
-                  }}
-                >
-                  TWITTER
-                </Button>
-                <Button variant='outlined' startIcon={<ShareIcon />}
-                  sx={{
-                    bgcolor: "#000", color: "inherit", borderRadius: 2,
-                    boxShadow: "0 0 0.2rem lightseagreen", "&:hover": {
-                      boxShadow: "0 2px 0.2rem lightseagreen"
-                    }
-                  }}
-                >
-                  SHARE
-                </Button>
+                <Button variant='outlined' startIcon={<XIcon />} sx={{
+                  bgcolor: "#000", color: "inherit", borderRadius: 2,
+                  boxShadow: "0 0 0.2rem lightseagreen", "&:hover": {
+                    boxShadow: "0 2px 0.2rem lightseagreen"
+                  }
+                }}>TWITTER</Button>
+                <Button variant='outlined' startIcon={<ShareIcon />} sx={{
+                  bgcolor: "#000", color: "inherit", borderRadius: 2,
+                  boxShadow: "0 0 0.2rem lightseagreen", "&:hover": {
+                    boxShadow: "0 2px 0.2rem lightseagreen"
+                  }
+                }}>SHARE</Button>
               </Box>
             </Box>
           </Drawer>
         </Box>
 
         {/* Notifications */}
-        <IconButton onClick={handleOpenNotif} color="inherit" aria-label="open notifications">
+        <IconButton onClick={handleOpenNotif} color="inherit">
           <NotificationsIcon />
         </IconButton>
         <Menu
@@ -210,7 +264,7 @@ function Navbar() {
         </Menu>
 
         {/* User Avatar */}
-        <IconButton onClick={handleOpenUserMenu} aria-label="open user menu">
+        <IconButton onClick={handleOpenUserMenu}>
           <Avatar
             alt="User"
             src="https://avatars.githubusercontent.com/u/83676505?v=4"
@@ -228,6 +282,7 @@ function Navbar() {
           <MenuItem onClick={handleCloseUserMenu}>Settings</MenuItem>
           <MenuItem onClick={handleCloseUserMenu}>Logout</MenuItem>
         </Menu>
+
       </Toolbar>
     </AppBar>
   );

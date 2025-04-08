@@ -1,38 +1,55 @@
 import React from 'react';
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
-function Layout() {
+const DRAWER_WIDTH = 220;
+
+const Layout = () => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md')); // <900px
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
+    <Box sx={{ display: 'flex' }}>
 
-        {/* Sidebar */}
-        <Grid item width={220}>
-          <Sidebar />
-        </Grid>
+      {/* Always render Sidebar to allow temporary variant on small screens */}
+      <Sidebar />
 
-        {/* Main Content */}
-        <Grid item>
-          {/* Navbar stays on top */}
-          <Navbar />
+      {/* Main content wrapper */}
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          width: isSmallScreen ? '100%' : `calc(100% - ${DRAWER_WIDTH}px)`,
+          ml: isSmallScreen ? 0 : `${DRAWER_WIDTH}px`, // push content when sidebar is permanent
+        }}
+      >
+        {/* Navbar */}
+        <Navbar />
 
-          {/* Page content */}
+        {/* Main content */}
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            mt: isSmallScreen ? 4 : 3,
+            p: isSmallScreen ? 1 : 4,
+          }}
+        >
+          <Outlet />
+        </Box>
 
-          <Box sx={{ mt: 8, p: 3 }}>
-            <Outlet />
-          </Box>
-
-          {/* Footer at the bottom */}
-          <Footer />
-        </Grid>
-
-      </Grid>
+        {/* Footer */}
+        <Footer />
+      </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
