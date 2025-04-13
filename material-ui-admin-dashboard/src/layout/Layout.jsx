@@ -7,14 +7,14 @@ import { Outlet } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const DRAWER_WIDTH = 220;
+const DRAWER_WIDTH = 250;
 
 const Layout = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md')); // <900px
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', bgcolor: theme.palette.background.default }}>
 
       {/* Always render Sidebar to allow temporary variant on small screens */}
       <Sidebar />

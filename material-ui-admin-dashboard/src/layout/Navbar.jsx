@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   AppBar, Box, IconButton, Toolbar, Typography,
   Avatar, Menu, MenuItem, Drawer, Paper, InputBase,
@@ -23,14 +23,24 @@ import {
   toggleThemeMode
 } from "../redux/settingSlice";
 
-function Navbar() {
+// Constants
+const sidenavColors = [
+  "#A71347", "#0F59AC", "#FF0000", "#377F42",
+  "#BD6E00", "#9B1210", "#1a8e88", "#6A1B9A",
+  "#00838F", "#2E7D32",
+];
 
+function Navbar() {
   const dispatch = useDispatch();
-  const navPosition = useSelector((state) => state.setting.defaultNavPosition); // 'fixed' or 'static'
+  const navPosition = useSelector((state) => state.setting.defaultNavPosition);
   const isNavbarFixed = navPosition === "fixed";
   const themeMode = useSelector((state) => state.setting.themeMode);
+  const selectedSidebarColor = useSelector((state) => state.setting.sidebarButtonBgColor);
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
 
@@ -45,18 +55,29 @@ function Navbar() {
   const handleOpenUserMenu = (e) => setAnchorUser(e.currentTarget);
   const handleCloseUserMenu = () => setAnchorUser(null);
 
-  const sidenavColors = [
-    "#A71347", "#0F59AC", "#FF0000", "#377F42",
-    "#BD6E00", "#9B1210", "#1a8e88", "#6A1B9A",
-    "#00838F", "#2E7D32",
-  ];
+  // Persist theme and navbar position
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('themeMode');
+    const storedNavPos = localStorage.getItem('navPosition');
+    if (storedTheme && storedTheme !== themeMode) {
+      dispatch(toggleThemeMode()); // Assumes toggle works symmetrically
+    }
+    if (storedNavPos && storedNavPos !== navPosition) {
+      dispatch(updateSNavPosition(storedNavPos));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('themeMode', themeMode);
+    localStorage.setItem('navPosition', navPosition);
+  }, [themeMode, navPosition]);
 
   return (
     <AppBar
       position={["fixed", "static", "absolute", "relative", "sticky"].includes(navPosition) ? navPosition : "fixed"}
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, bgcolor: "#151A1F" }}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
-      <Toolbar>
+      <Toolbar sx={{ bgcolor: theme.palette.background.default }}>
 
         {/* Left: Logo and Toggle Sidebar */}
         <Box display="flex" alignItems="center" flexGrow={1}>
@@ -87,16 +108,17 @@ function Navbar() {
               ml: 3,
               display: 'flex',
               alignItems: 'center',
+              borderRadius: 2,
               width: 200,
               p: 1,
-              backgroundColor: 'rgba(255,255,255,0.15)',
-              '&:hover': { backgroundColor: 'rgba(255,255,255,0.25)' },
-              color: '#fff'
+              bgcolor: theme.palette.background.default,
             }}
           >
             <SearchIcon sx={{ ml: 1, mr: 1, color: '#fff' }} />
             <InputBase
-              placeholder="Search…"
+              placeholder="Search here"
+              value={searchTerm}
+              onChange={handleSearchChange}
               inputProps={{ 'aria-label': 'search' }}
               sx={{ color: '#fff', flex: 1 }}
             />
@@ -113,13 +135,15 @@ function Navbar() {
             anchor='right'
             open={drawerOpen}
             onClose={handleDrawerClose}
+            ModalProps={{ keepMounted: true }}
             sx={{
               '& .MuiDrawer-paper': {
                 width: 'auto',
-                backgroundColor: '#1A2027',
+                bgcolor: theme.palette.background.default,
                 color: 'inherit',
                 paddingTop: '64px',
                 px: 2,
+                mt: 2
               }
             }}
           >
@@ -146,6 +170,7 @@ function Navbar() {
                     borderRadius: '50%',
                     backgroundColor: color,
                     cursor: 'pointer',
+                    border: selectedSidebarColor === color ? '2px solid #00e676' : '2px solid transparent',
                     '&:hover': { border: '2px solid #ffffff' }
                   }}
                 />

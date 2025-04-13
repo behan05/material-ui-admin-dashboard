@@ -6,7 +6,6 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Box, IconButton, Typography } from "@mui/material";
 import { useMediaQuery, useTheme } from '@mui/material';
 
-
 const stats = [
     {
         title: "Bookings",
@@ -47,26 +46,23 @@ function StatsCard() {
     return (
         <Box
             display="flex"
-            justifyContent="space-evenly"
-            gap={1}
-            flexWrap="wrap">
+            flexWrap="wrap"
+            gap={2}
+            justifyContent="space-between"
+        >
 
             {stats.map((stat, i) => {
                 return (
                     <Box
-                        bgcolor="#181A1B"
+                        bgcolor={theme.palette.background.default}
                         mt={2} p={1} key={i}
                         display="flex"
                         justifyContent="space-between"
                         sx={{
-                            width: isSmallScreen ? "100%" : 270,
-                            minHeight: 120,
-                            borderRadius: 2,
-                            boxShadow: "0 2px 0.1rem lightseagreen",
-
-                            "&:hover": {
-                                boxShadow: "2px 0 0.1rem red",
-                            }
+                            flex: `1 1 ${isSmallScreen ? "100%" : "250px"}`,
+                            minHeight: 140,
+                            borderRadius: 3,
+                            boxShadow: "0 0 1px",
                         }}>
 
                         <Box>

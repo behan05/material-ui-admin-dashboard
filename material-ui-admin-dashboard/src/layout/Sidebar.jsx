@@ -1,73 +1,73 @@
 import React from 'react';
 import {
-  Drawer,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  Box,
-  Divider,
+  Drawer, Box, Typography, Divider, List, ListItemButton,
+  ListItemIcon, ListItemText, Collapse
 } from '@mui/material';
-import { Link, NavLink } from 'react-router-dom';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import { useMediaQuery, useTheme } from '@mui/material';
-
-import { useSelector, useDispatch } from 'react-redux';
+import {
+  SpaceDashboard as SpaceDashboardIcon,
+  People as PeopleIcon,
+  BarChart as BarChartIcon,
+  Settings as SettingsIcon,
+  ExpandLess,
+  ExpandMore,
+  Layers as LayersIcon,
+  Assessment as AssessmentIcon,
+  Inventory2 as Inventory2Icon,
+  Help as HelpIcon,
+  Info as InfoIcon,
+} from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../redux/uiSlice';
-import { updateSNavPosition } from "../redux/settingSlice";
-
-const menuItems = [
-  { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-  { text: 'Table', icon: <TableChartIcon />, path: '/table' },
-  { text: 'Billing', icon: <ReceiptLongIcon />, path: '/billing' },
-  { text: 'Notifications', icon: <NotificationsIcon />, path: '/notifications' },
-  { text: 'Profile', icon: <AccountCircleIcon />, path: '/profile' },
-  { text: 'Login', icon: <ExitToAppIcon />, path: '/login' },
-  { text: 'Sign Up', icon: <HowToRegIcon />, path: '/signup' },
-];
+import { Link, NavLink } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Sidebar = () => {
-
-  // Redux State
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isSidebarOpen = useSelector((state) => state.ui.isSidebarOpen);
   const currentBgColor = useSelector((state) => state.setting.defaultSidebarButtonBgColor);
-  const currentSidearBgColor = useSelector((state) => state.setting.defaultSidebarBgColor)
   const currentNavPosition = useSelector((state) => state.setting.defaultNavPosition);
-  console.log(currentNavPosition);
-
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+  const [openMore, setOpenMore] = React.useState(false);
+  const toggleMoreOptions = () => setOpenMore(!openMore);
+
+  const menuItems = [
+    { text: 'Dashboard', icon: <SpaceDashboardIcon />, path: '/' },
+    { text: 'Users', icon: <PeopleIcon />, path: '/users' },
+    { text: 'Analytics', icon: <BarChartIcon />, path: '/analytics' },
+    { text: 'Products', icon: <Inventory2Icon />, path: '/products' },
+    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+  ];
+
+  const moreItems = [
+    { text: 'Reports', icon: <AssessmentIcon />, path: '/reports' },
+    { text: 'Integrations', icon: <LayersIcon />, path: '/integrations' },
+    { text: 'Support', icon: <HelpIcon />, path: '/support' },
+    { text: 'About', icon: <InfoIcon />, path: '/about' },
+  ];
+
   return (
     <Drawer
       variant={isSmallScreen ? "temporary" : "permanent"}
-      open={isSmallScreen ? isSidebarOpen : true} // permanent always open
+      open={isSmallScreen ? isSidebarOpen : true}
       onClose={() => dispatch(toggleSidebar())}
       sx={{
         '& .MuiDrawer-paper': {
-          width: 220,
+          width: 250,
           boxSizing: 'border-box',
-          background: currentSidearBgColor,
-          color: "white",
+          background: theme.palette.background.default, // ✨ dynamic background
+          color: theme.palette.text.primary,
           mt: currentNavPosition === "fixed" ? 7 : 0,
-          p: 1
-        }
+          p: 1,
+        },
       }}
     >
       <Box sx={{ p: 3 }}>
         <Typography
           variant="h6"
-          noWrap
           component={Link}
           to="/"
           display="flex"
@@ -75,10 +75,11 @@ const Sidebar = () => {
           gap={1}
           sx={{ textDecoration: "none", color: "inherit" }}
         >
-          <SpaceDashboardIcon />DASHBOARD
+          <SpaceDashboardIcon /> DASHBOARD
         </Typography>
       </Box>
-      <Divider sx={{ borderColor: '#333' }} />
+
+      <Divider sx={{ borderColor: theme.palette.divider }} />
 
       <List>
         {menuItems.map((item) => (
@@ -86,18 +87,54 @@ const Sidebar = () => {
             key={item.text}
             component={NavLink}
             to={item.path}
-            onClick={isSmallScreen ? () => dispatch(toggleSidebar()) : undefined} // close on item click
+            onClick={isSmallScreen ? () => dispatch(toggleSidebar()) : undefined}
             sx={{
-              color: '#fff',
+              color: theme.palette.text.primary,
               '&.active': {
                 backgroundColor: currentBgColor,
               },
             }}
           >
-            <ListItemIcon sx={{ color: '#fff' }}>{item.icon}</ListItemIcon>
+            <ListItemIcon sx={{ color: theme.palette.text.primary }}>
+              {item.icon}
+            </ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItemButton>
         ))}
+
+        {/* More Options Toggle */}
+        <ListItemButton onClick={toggleMoreOptions}>
+          <ListItemIcon sx={{ color: theme.palette.text.primary }}>
+            <LayersIcon />
+          </ListItemIcon>
+          <ListItemText primary="More Options" />
+          {openMore ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={openMore} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {moreItems.map((item) => (
+              <ListItemButton
+                key={item.text}
+                component={NavLink}
+                to={item.path}
+                onClick={isSmallScreen ? () => dispatch(toggleSidebar()) : undefined}
+                sx={{
+                  pl: 4,
+                  color: theme.palette.text.primary,
+                  '&.active': {
+                    backgroundColor: currentBgColor,
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ color: theme.palette.text.primary }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            ))}
+          </List>
+        </Collapse>
       </List>
     </Drawer>
   );

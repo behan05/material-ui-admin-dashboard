@@ -8,17 +8,15 @@ import { router } from "./routes/AppRoutes";
 import { Provider, useSelector } from "react-redux";
 import { store } from './redux/store';
 
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { getCustomTheme } from './theme/theme'; // ✅ Import your custom theme
 
 // --- Theme Wrapper that listens to Redux ---
 function ThemeWrapper() {
-  const mode = useSelector((state) => state.setting.themeMode);
+  const mode = useSelector((state) => state.setting.themeMode);      // light/dark
+  const colorMode = useSelector((state) => state.setting.colorMode); // default/purple/etc.
 
-  const theme = useMemo(() => createTheme({
-    palette: {
-      mode,
-    },
-  }), [mode]);
+  const theme = useMemo(() => getCustomTheme(mode, colorMode), [mode, colorMode]);
 
   return (
     <ThemeProvider theme={theme}>
