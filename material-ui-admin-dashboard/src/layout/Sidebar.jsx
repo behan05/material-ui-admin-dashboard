@@ -7,7 +7,6 @@ import {
   SpaceDashboard as SpaceDashboardIcon,
   People as PeopleIcon,
   BarChart as BarChartIcon,
-  Settings as SettingsIcon,
   ExpandLess,
   ExpandMore,
   Layers as LayersIcon,
@@ -16,6 +15,9 @@ import {
   Help as HelpIcon,
   Info as InfoIcon,
 } from '@mui/icons-material';
+import HistoryIcon from '@mui/icons-material/History';
+import Person2Icon from '@mui/icons-material/Person2';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../redux/uiSlice';
 import { Link, NavLink } from 'react-router-dom';
@@ -38,8 +40,9 @@ const Sidebar = () => {
     { text: 'Dashboard', icon: <SpaceDashboardIcon />, path: '/' },
     { text: 'Users', icon: <PeopleIcon />, path: '/users' },
     { text: 'Analytics', icon: <BarChartIcon />, path: '/analytics' },
+    { text: 'Profile', icon: <Person2Icon />, path: '/profile' },
     { text: 'Products', icon: <Inventory2Icon />, path: '/products' },
-    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+    { text: 'Logs', icon: <HistoryIcon />, path: '/logs' },
   ];
 
   const moreItems = [
@@ -47,6 +50,8 @@ const Sidebar = () => {
     { text: 'Integrations', icon: <LayersIcon />, path: '/integrations' },
     { text: 'Support', icon: <HelpIcon />, path: '/support' },
     { text: 'About', icon: <InfoIcon />, path: '/about' },
+    { text: 'About', icon: <InfoIcon />, path: '/about' },
+
   ];
 
   return (

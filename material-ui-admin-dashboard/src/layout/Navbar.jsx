@@ -13,6 +13,9 @@ import {
   Share as ShareIcon, X as XIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
+import Person2Icon from '@mui/icons-material/Person2';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../redux/uiSlice';
@@ -31,6 +34,8 @@ const sidenavColors = [
 ];
 
 function Navbar() {
+
+
   const dispatch = useDispatch();
   const navPosition = useSelector((state) => state.setting.defaultNavPosition);
   const isNavbarFixed = navPosition === "fixed";
@@ -53,7 +58,11 @@ function Navbar() {
 
   const [anchorUser, setAnchorUser] = React.useState(null);
   const handleOpenUserMenu = (e) => setAnchorUser(e.currentTarget);
-  const handleCloseUserMenu = () => setAnchorUser(null);
+
+  const handleCloseUserMenu = () => {
+    setAnchorUser(null)
+    // navigate("/profile");
+  };
 
   // Persist theme and navbar position
   useEffect(() => {
@@ -303,9 +312,21 @@ function Navbar() {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
-          <MenuItem onClick={handleCloseUserMenu}>Settings</MenuItem>
-          <MenuItem onClick={handleCloseUserMenu}>Logout</MenuItem>
+          <MenuItem
+            onClick={handleCloseUserMenu}
+            component={NavLink}
+            to="/profile"
+            sx={{ textDecoration: "none", gap:1}}> {<Person2Icon />} Profile</MenuItem>
+          <MenuItem
+            onClick={handleCloseUserMenu}
+            component={NavLink}
+            to="/setting"
+            sx={{ textDecoration: "none", gap:1 }}> {<SettingsIcon />} Settings</MenuItem>
+          <MenuItem
+            onClick={handleCloseUserMenu}
+            component={NavLink}
+            to="/logout"
+            sx={{ textDecoration: "none", gap:1 }}> {<LogoutIcon />} Logout</MenuItem>
         </Menu>
 
       </Toolbar>

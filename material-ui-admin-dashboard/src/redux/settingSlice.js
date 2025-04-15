@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    defaultSidebarButtonBgColor: "#1a8e88",
+    defaultSidebarButtonBgColor: "#0f5aa8",
     defaultSidebarBgColor: "linear-gradient(135deg, #111519, #D8D8E9)",
     defaultNavPosition: "fixed",
     themeMode: "dark",
