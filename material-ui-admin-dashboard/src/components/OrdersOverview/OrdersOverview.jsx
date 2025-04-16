@@ -54,7 +54,7 @@ const OrdersOverview = () => {
                 boxShadow: 3,
                 transition: "min-height 0.3s ease",
                 minHeight: "100%",
-                boxShadow: "0 0 1px"
+                boxShadow: 5
             }}
         >
             <Typography variant="h6" gutterBottom>

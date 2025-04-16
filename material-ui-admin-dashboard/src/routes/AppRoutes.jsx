@@ -5,6 +5,7 @@ import Layout from "../layout/Layout";
 import Dashboard from "../features/dashboard/DashboardPage";
 import PageNotFound from "../404-Error/PageNotFound"
 import Profile from "../features/profile/Profile";
+import Tables from "../features/table/Tables";
 
 export const router = createBrowserRouter([
     {
@@ -13,6 +14,7 @@ export const router = createBrowserRouter([
         children: [
             { path: "/", element: <Dashboard /> },
             { path: "/profile", element: <Profile /> },
+            { path: "/tables", element: <Tables /> },
             { path: "*", element: <PageNotFound /> },
         ]
     }

@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import {
   SpaceDashboard as SpaceDashboardIcon,
-  People as PeopleIcon,
   BarChart as BarChartIcon,
   ExpandLess,
   ExpandMore,
@@ -17,6 +16,7 @@ import {
 } from '@mui/icons-material';
 import HistoryIcon from '@mui/icons-material/History';
 import Person2Icon from '@mui/icons-material/Person2';
+import BackupTableIcon from '@mui/icons-material/BackupTable';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../redux/uiSlice';
@@ -38,7 +38,7 @@ const Sidebar = () => {
 
   const menuItems = [
     { text: 'Dashboard', icon: <SpaceDashboardIcon />, path: '/' },
-    { text: 'Users', icon: <PeopleIcon />, path: '/users' },
+    { text: 'Tables', icon: <BackupTableIcon />, path: '/tables' },
     { text: 'Analytics', icon: <BarChartIcon />, path: '/analytics' },
     { text: 'Profile', icon: <Person2Icon />, path: '/profile' },
     { text: 'Products', icon: <Inventory2Icon />, path: '/products' },
@@ -50,8 +50,6 @@ const Sidebar = () => {
     { text: 'Integrations', icon: <LayersIcon />, path: '/integrations' },
     { text: 'Support', icon: <HelpIcon />, path: '/support' },
     { text: 'About', icon: <InfoIcon />, path: '/about' },
-    { text: 'About', icon: <InfoIcon />, path: '/about' },
-
   ];
 
   return (

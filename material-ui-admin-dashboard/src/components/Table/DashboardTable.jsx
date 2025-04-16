@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRef, useState, useEffect } from "react";
 import {
     Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow, Typography, Box, Menu,
@@ -54,7 +53,7 @@ const DashboardTable = ({ title = "Recent Projects", data = [] }) => {
             p: 2,
             borderRadius: 4,
             bgcolor: theme.palette.background.default,
-            boxShadow: "0 0 1px "
+            boxShadow: 5
         }}>
             <Box
                 display="flex"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Avatar,
@@ -31,8 +31,12 @@ const Profile = () => {
     boxShadow: 3,
   };
 
+  useEffect(() => {
+    document.title = "Admin / Profile"
+  }, []);
+
   return (
-    <Box p={3} sx={{ backgroundColor: theme.palette.background.default }}>
+    <Box p={isSmallScreen ? 0 : 3} sx={{ backgroundColor: theme.palette.background.default }}>
       {/* Cover Image */}
       <Box position="relative">
         <img

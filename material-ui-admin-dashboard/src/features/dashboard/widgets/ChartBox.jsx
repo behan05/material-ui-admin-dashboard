@@ -88,7 +88,7 @@ const ChartBox = () => {
                         borderRadius: 3,
                         color: theme.palette.text.primary,
                         filter: "dropbox(0 0 0.2rem)",
-                        boxShadow: "0 0 1px",
+                        boxShadow: 6,
                     }}
                 >
                     <CardContent sx={{ bgcolor: theme.palette.background.default, }}>
