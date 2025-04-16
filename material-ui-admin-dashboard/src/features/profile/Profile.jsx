@@ -9,6 +9,7 @@ import {
   IconButton,
   Button,
   useTheme,
+  useMediaQuery
 } from "@mui/material";
 import SettingsIcon from '@mui/icons-material/Settings';
 import MessageIcon from '@mui/icons-material/Message';
@@ -20,10 +21,11 @@ import Conversations from "./Conversations";
 
 const Profile = () => {
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const coverStyle = {
     width: "100%",
-    height: 300,
+    height: isSmallScreen ? 240 : 300,
     objectFit: "cover",
     borderRadius: 20,
     boxShadow: 3,
@@ -62,7 +64,7 @@ const Profile = () => {
               {/* Avatar + Name */}
               <Grid item display="flex" flexGrow={1}>
                 <Avatar
-                  src="./public/developerImg.png"
+                  src="/developerImg.png"
                   alt="Profile"
                   sx={{
                     width: 100,
@@ -101,7 +103,7 @@ const Profile = () => {
             </Grid>
 
             {/* Three-Column Info Section */}
-            <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={3} mt={3}>
+            <Box display="grid" gridTemplateColumns={"repeat(auto-fit, minmax(280px, 1fr))"} gap={3} mt={3} flexWrap={"wrap"}>
               <PlateformSetting />
               <ProfileInformation />
               <Conversations />

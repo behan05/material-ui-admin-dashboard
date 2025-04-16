@@ -8,27 +8,27 @@ const userMessage = [
     mes: "Hi! I need more information.."
   },
   {
+    img: "/sampleImg/img5.jpg",
+    name: "Ivanna",
+    mes: "About files I can.."
+  },
+  {
     img: "sampleImg/img2.jpg",
     name: "Anne Marie",
     mes: "Awesome work, can you.."
   },
   {
-    img: "sampleImg/img5.jpg",
-    name: "Ivanna",
-    mes: "About files I can.."
-  },
-  {
-    img: "sampleImg/img3.jpg",
+    img: "/sampleImg/img3.jpg",
     name: "Peterson",
     mes: "Have a great afternoon.."
   },
   {
-    img: "sampleImg/img4.jpg",
+    img: "/sampleImg/img4.jpg",
     name: "Nick Daniel",
-    mes: "Hi! I need more information.."
+    mes: "Hi! may i asked about.."
   },
   {
-    img: "sampleImg/img6.jpg",
+    img: "/sampleImg/img6.jpg",
     name: "Rocky Joc",
     mes: "Hi! can you give more access..."
   },
