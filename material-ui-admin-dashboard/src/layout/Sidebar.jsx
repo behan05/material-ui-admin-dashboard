@@ -10,13 +10,16 @@ import {
   ExpandMore,
   Layers as LayersIcon,
   Assessment as AssessmentIcon,
-  Inventory2 as Inventory2Icon,
   Help as HelpIcon,
   Info as InfoIcon,
 } from '@mui/icons-material';
 import HistoryIcon from '@mui/icons-material/History';
 import Person2Icon from '@mui/icons-material/Person2';
 import BackupTableIcon from '@mui/icons-material/BackupTable';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import PivotTableChartIcon from '@mui/icons-material/PivotTableChart';
+import LoginIcon from '@mui/icons-material/Login';
+import LockIcon from '@mui/icons-material/Lock';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../redux/uiSlice';
@@ -41,8 +44,10 @@ const Sidebar = () => {
     { text: 'Tables', icon: <BackupTableIcon />, path: '/tables' },
     { text: 'Analytics', icon: <BarChartIcon />, path: '/analytics' },
     { text: 'Profile', icon: <Person2Icon />, path: '/profile' },
-    { text: 'Products', icon: <Inventory2Icon />, path: '/products' },
+    { text: 'Notifications', icon: <NotificationsIcon />, path: '/notifications' },
     { text: 'Logs', icon: <HistoryIcon />, path: '/logs' },
+    { text: 'Login', icon: <LoginIcon />, path: '/login' },
+    { text: 'Sign up', icon: <LockIcon />, path: '/signup' },
   ];
 
   const moreItems = [
@@ -61,7 +66,7 @@ const Sidebar = () => {
         '& .MuiDrawer-paper': {
           width: 250,
           boxSizing: 'border-box',
-          background: theme.palette.background.default, // ✨ dynamic background
+          background: theme.palette.background.default,
           color: theme.palette.text.primary,
           mt: currentNavPosition === "fixed" ? 7 : 0,
           p: 1,
@@ -78,7 +83,7 @@ const Sidebar = () => {
           gap={1}
           sx={{ textDecoration: "none", color: "inherit" }}
         >
-          <SpaceDashboardIcon /> DASHBOARD
+          <PivotTableChartIcon /> DASHBOARD
         </Typography>
       </Box>
 

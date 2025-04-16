@@ -23,7 +23,7 @@ export const getCustomTheme = (mode = "light") =>
                         main: "#2196f3",
                     },
                     background: {
-                        default: "#f4f6f8",
+                        default: "#000",
                         paper: "#ffffff",
                     },
                     text: {

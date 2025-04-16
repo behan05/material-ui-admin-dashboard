@@ -241,7 +241,7 @@ function Navbar() {
 
             {/* Theme Toggle */}
             <Box display='flex' justifyContent="space-between" alignItems="center" mt={2}>
-              <Typography>Dark Mode</Typography>
+              <Typography>Reading Mode</Typography>
               <Switch
                 checked={themeMode === 'dark'}
                 onChange={() => dispatch(toggleThemeMode())}

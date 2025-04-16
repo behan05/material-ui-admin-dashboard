@@ -62,7 +62,7 @@ function StatsCard() {
                             flex: `1 1 ${isSmallScreen ? "100%" : "250px"}`,
                             minHeight: 140,
                             borderRadius: 3,
-                            boxShadow: 6,
+                            boxShadow: " 0 0 2px #ccc",
                         }}>
 
                         <Box>

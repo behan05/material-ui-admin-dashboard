@@ -6,6 +6,8 @@ import Dashboard from "../features/dashboard/DashboardPage";
 import PageNotFound from "../404-Error/PageNotFound"
 import Profile from "../features/profile/Profile";
 import Tables from "../features/table/Tables";
+import Analytics from "../features/analytics/Analytics";
+import Notifications from "../features/notification/Notifications";
 
 export const router = createBrowserRouter([
     {
@@ -15,6 +17,8 @@ export const router = createBrowserRouter([
             { path: "/", element: <Dashboard /> },
             { path: "/profile", element: <Profile /> },
             { path: "/tables", element: <Tables /> },
+            { path: "/analytics", element: <Analytics /> },
+            { path: "/notifications", element: <Notifications /> },
             { path: "*", element: <PageNotFound /> },
         ]
     }
