@@ -8,6 +8,7 @@ import Profile from "../features/profile/Profile";
 import Tables from "../features/table/Tables";
 import Analytics from "../features/analytics/Analytics";
 import Notifications from "../features/notification/Notifications";
+import Logs from "../features/logs/Logs.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
             { path: "/tables", element: <Tables /> },
             { path: "/analytics", element: <Analytics /> },
             { path: "/notifications", element: <Notifications /> },
+            { path: "/logs", element: <Logs /> },
             { path: "*", element: <PageNotFound /> },
         ]
     }
