@@ -79,6 +79,7 @@ function Login() {
                     fullWidth
                     startIcon={<GoogleIcon />}
                     variant="outlined"
+                    bgcolor={theme.palette.background.default}
                     onClick={() => handleSocialLogin("Google")}
                 >
                     Login with Google
@@ -87,6 +88,7 @@ function Login() {
                     fullWidth
                     startIcon={<GitHubIcon />}
                     variant="outlined"
+                    bgcolor={theme.palette.background.default}
                     onClick={() => handleSocialLogin("GitHub")}
                 >
                     Login with GitHub
@@ -95,6 +97,7 @@ function Login() {
                     fullWidth
                     startIcon={<FacebookIcon />}
                     variant="outlined"
+                    bgcolor={theme.palette.background.default}
                     onClick={() => handleSocialLogin("Facebook")}
                 >
                     Login with Facebook

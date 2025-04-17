@@ -108,6 +108,7 @@ function Signup() {
                     fullWidth
                     startIcon={<GoogleIcon />}
                     variant="outlined"
+                    bgcolor = {theme.palette.background.default}
                     onClick={() => handleSocialSignup("Google")}
                 >
                     Sign up with Google
@@ -116,6 +117,7 @@ function Signup() {
                     fullWidth
                     startIcon={<GitHubIcon />}
                     variant="outlined"
+                    bgcolor = {theme.palette.background.default}
                     onClick={() => handleSocialSignup("GitHub")}
                 >
                     Sign up with GitHub
@@ -124,6 +126,7 @@ function Signup() {
                     fullWidth
                     startIcon={<FacebookIcon />}
                     variant="outlined"
+                    bgcolor = {theme.palette.background.default}
                     onClick={() => handleSocialSignup("Facebook")}
                 >
                     Sign up with Facebook
