@@ -9,6 +9,8 @@ import Tables from "../features/table/Tables";
 import Analytics from "../features/analytics/Analytics";
 import Notifications from "../features/notification/Notifications";
 import Logs from "../features/logs/Logs.jsx";
+import Login from "../features/login/Login.jsx";
+import Signup from "../features/signup/Signup.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -21,6 +23,8 @@ export const router = createBrowserRouter([
             { path: "/analytics", element: <Analytics /> },
             { path: "/notifications", element: <Notifications /> },
             { path: "/logs", element: <Logs /> },
+            { path: "/login", element: <Login /> },
+            { path: "/signup", element: <Signup /> },
             { path: "*", element: <PageNotFound /> },
         ]
     }
