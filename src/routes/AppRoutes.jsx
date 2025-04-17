@@ -8,7 +8,7 @@ import Profile from "../features/profile/Profile";
 import Tables from "../features/table/Tables";
 import Analytics from "../features/analytics/Analytics";
 import Notifications from "../features/notification/Notifications";
-import Logs from "../features/logs/Logs.jsx";
+import Logs from "../features/usersLog/Logs";
 import Login from "../features/login/Login.jsx";
 import Signup from "../features/signup/Signup.jsx";
 
