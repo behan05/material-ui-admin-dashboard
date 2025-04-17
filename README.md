@@ -1,4 +1,4 @@
-/\*
+\*
 🧩 Admin Dashboard UI (React + MUI)
 
 A modern and responsive Admin Dashboard UI built with **React**, **Material UI**, and **Recharts**.
@@ -18,6 +18,7 @@ This project is designed to be scalable, customizable, and developer-friendly. I
 - 🔐 Auth pages with Login, Signup, Forgot Password, and Social Logins
 
 📁 Folder Structure (Example):
+```
 src/
 │
 ├── assets/ # Icons, images, logos
@@ -27,6 +28,7 @@ src/
 ├── theme/ # MUI theme setup
 ├── App.jsx # Root component
 ├── index.js # Entry point
+```
 
 📦 Tech Stack:
 
@@ -47,4 +49,4 @@ src/
 This project is frontend only. You can easily integrate it with any backend like Node.js, Django, or Firebase.
 
 📮 Feel free to contribute or fork this project!
-\*/
+*/
