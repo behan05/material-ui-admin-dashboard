@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   const theme = useTheme();
-  const isSmallDevice = useMediaQuery(theme.breakpoints.down("md")); // ✅ Correct usage
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <Box
@@ -19,24 +19,41 @@ const Footer = () => {
         bgcolor: theme.palette.background.default,
         mt: "auto",
         borderTop: "1px solid #ccc",
-        gap: isSmallDevice ? 2 : 0, // Adds spacing between items in column layout
+        gap: isSmallDevice ? 2 : 0,
       }}
     >
       <Typography variant="body2" color="text.secondary">
         © {new Date().getFullYear()} CodeEnclave • All Rights Reserved
       </Typography>
 
-      <Box display="flex" gap={2} flexWrap="wrap" justifyContent={isSmallDevice ? "center" : "flex-end"}>
-        <Typography component={Link} to="#" sx={{ cursor: "pointer", textDecoration: "none" }}>
-          Get Theme
+      <Box
+        display="flex"
+        gap={2}
+        flexWrap="wrap"
+        justifyContent={isSmallDevice ? "center" : "flex-end"}
+      >
+        <Typography
+          component={Link}
+          to="https://behan-portfolio.vercel.app"
+          sx={{ cursor: "pointer", color: theme.palette.text.primary, textDecoration: "none" }}>
+          Portfolio
         </Typography>
-        <Typography component={Link} to="#" sx={{ cursor: "pointer", textDecoration: "none" }}>
+        <Typography
+          component={Link}
+          to="#"
+          sx={{ cursor: "pointer", color: theme.palette.text.primary, textDecoration: "none" }}>
           About Us
         </Typography>
-        <Typography component={Link} to="#" sx={{ cursor: "pointer", textDecoration: "none" }}>
+        <Typography
+          component={Link}
+          to="#"
+          sx={{ cursor: "pointer", color: theme.palette.text.primary, textDecoration: "none" }}>
           Blog
         </Typography>
-        <Typography component={Link} to="#" sx={{ cursor: "pointer", textDecoration: "none" }}>
+        <Typography
+          component={Link}
+          to="#"
+          sx={{ cursor: "pointer", color: theme.palette.text.primary, textDecoration: "none" }}>
           License
         </Typography>
       </Box>
