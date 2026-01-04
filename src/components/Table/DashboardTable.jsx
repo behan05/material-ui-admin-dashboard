@@ -51,9 +51,9 @@ const DashboardTable = ({ title = "Recent Projects", data = [] }) => {
     return (
         <Box elevation={3} sx={{
             p: 2,
-            borderRadius: 4,
-            bgcolor: theme.palette.background.default,
-            boxShadow: 5
+            borderRadius: 3,
+            border: `1px solid ${theme.palette.divider}`,
+            background: theme.palette.background.paper
         }}>
             <Box
                 display="flex"

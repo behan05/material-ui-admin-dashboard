@@ -68,26 +68,10 @@ const Sidebar = () => {
           boxSizing: 'border-box',
           background: theme.palette.background.default,
           color: theme.palette.text.primary,
-          mt: currentNavPosition === "fixed" ? 7 : 0,
-          p: 1,
+          px: 1,
         },
       }}
     >
-      <Box sx={{ p: 3 }}>
-        <Typography
-          variant="h6"
-          component={Link}
-          to="/"
-          display="flex"
-          alignItems="center"
-          gap={1}
-          sx={{ textDecoration: "none", color: "inherit" }}
-        >
-          <PivotTableChartIcon /> DASHBOARD
-        </Typography>
-      </Box>
-
-      <Divider sx={{ borderColor: theme.palette.divider }} />
 
       <List>
         {menuItems.map((item) => (
@@ -98,6 +82,7 @@ const Sidebar = () => {
             onClick={isSmallScreen ? () => dispatch(toggleSidebar()) : undefined}
             sx={{
               color: theme.palette.text.primary,
+              borderRadius: 2,
               '&.active': {
                 backgroundColor: currentBgColor,
               },

@@ -1,19 +1,11 @@
-import React from "react";
-import { Box, IconButton, Tooltip } from "@mui/material";
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Box } from "@mui/material";
 import DashboardStats from "./widgets/StatsCard";
 import ChartBox from "./widgets/ChartBox";
 import { projectTableData } from "../../data/dashboardTableData";
 import DashboardTable from "../../components/Table/DashboardTable";
 import OrdersOverview from "../../components/OrdersOverview/OrdersOverview";
-import { useTheme } from "@mui/material/styles";
 
 const Dashboard = () => {
-  const theme = useTheme()
-
-  const handleSettingsClick = () => {
-    // Setting Logic Here...
-  };
 
   return (
     <>
@@ -37,28 +29,6 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
-
-      {/* Floating Settings Icon */}
-      <Tooltip title="Settings">
-        <IconButton
-          onClick={handleSettingsClick}
-          sx={{
-            position: 'fixed',
-            bottom: 20,
-            right: 20,
-            zIndex: 1300,
-            bgcolor: theme.palette.background.default,
-            border: '1px solid',
-            borderColor: 'divider',
-            boxShadow: 4,
-            '&:hover': {
-              bgcolor: 'background.default',
-            },
-          }}
-        >
-          <SettingsIcon />
-        </IconButton>
-      </Tooltip>
     </>
   );
 };

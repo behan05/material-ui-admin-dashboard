@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
-    Box, TextField, Button, Typography, Divider, useTheme, Stack
+    Box, TextField, Button, Tooltip, Typography,IconButton, Divider, useTheme, Stack
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -35,12 +35,10 @@ function Signup() {
             sx={{
                 maxWidth: 420,
                 margin: "auto",
-                mt: 8,
                 p: 4,
                 borderRadius: 3,
                 boxShadow: "0 0 10px rgba(0,0,0,0.2)",
-                bgcolor: theme.palette.background.default,
-                boxShadow: "0 0 6px #ccc"
+                bgcolor: theme.palette.background.paper,
             }}
         >
             <Typography variant="h5" mb={3} textAlign="center">
@@ -49,6 +47,7 @@ function Signup() {
 
             <form onSubmit={handleSubmit}>
                 <TextField
+                    size="small"
                     fullWidth
                     label="Name"
                     name="name"
@@ -57,6 +56,7 @@ function Signup() {
                     margin="normal"
                 />
                 <TextField
+                    size="small"
                     fullWidth
                     label="Email"
                     name="email"
@@ -66,6 +66,7 @@ function Signup() {
                     margin="normal"
                 />
                 <TextField
+                    size="small"
                     fullWidth
                     label="Password"
                     name="password"
@@ -75,6 +76,7 @@ function Signup() {
                     margin="normal"
                 />
                 <TextField
+                    size="small"
                     fullWidth
                     label="Confirm Password"
                     name="confirmPassword"
@@ -103,34 +105,39 @@ function Signup() {
 
             <Divider sx={{ my: 3 }}>or</Divider>
 
-            <Stack spacing={1.5}>
-                <Button
-                    fullWidth
-                    startIcon={<GoogleIcon />}
-                    variant="outlined"
-                    bgcolor = {theme.palette.background.default}
-                    onClick={() => handleSocialSignup("Google")}
-                >
-                    Sign up with Google
-                </Button>
-                <Button
-                    fullWidth
-                    startIcon={<GitHubIcon />}
-                    variant="outlined"
-                    bgcolor = {theme.palette.background.default}
-                    onClick={() => handleSocialSignup("GitHub")}
-                >
-                    Sign up with GitHub
-                </Button>
-                <Button
-                    fullWidth
-                    startIcon={<FacebookIcon />}
-                    variant="outlined"
-                    bgcolor = {theme.palette.background.default}
-                    onClick={() => handleSocialSignup("Facebook")}
-                >
-                    Sign up with Facebook
-                </Button>
+            <Stack
+                direction="row"
+                spacing={2}
+                justifyContent="center"
+            >
+                {[
+                    { name: 'Google', icon: <GoogleIcon /> },
+                    { name: 'GitHub', icon: <GitHubIcon /> },
+                    { name: 'Facebook', icon: <FacebookIcon /> },
+                ].map(({ name, icon }) => (
+                    <Tooltip key={name} title={`Sign up with ${name}`} arrow>
+                        <IconButton
+                            onClick={() => handleSocialSignup(name)}
+                            sx={{
+                                width: 44,
+                                height: 44,
+                                borderRadius: 2,
+                                bgcolor: 'action.hover',
+                                color: 'text.primary',
+                                transition: 'all 0.25s ease',
+                                '&:hover': {
+                                    bgcolor: 'action.selected',
+                                    transform: 'translateY(-2px)',
+                                },
+                                '&:active': {
+                                    transform: 'translateY(0)',
+                                },
+                            }}
+                        >
+                            {icon}
+                        </IconButton>
+                    </Tooltip>
+                ))}
             </Stack>
         </Box>
     );

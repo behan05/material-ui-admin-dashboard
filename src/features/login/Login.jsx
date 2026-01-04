@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
-    Box, TextField, Button, Typography, Divider, useTheme, Stack
+    Box, TextField, Button, Typography, IconButton, Tooltip, Divider, useTheme, Stack
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -31,8 +31,7 @@ function Login() {
                 p: 4,
                 borderRadius: 3,
                 boxShadow: "0 0 10px rgba(0,0,0,0.2)",
-                bgcolor: theme.palette.background.default,
-                boxShadow: "0 0 6px #ccc"
+                bgcolor: theme.palette.background.paper,
             }}
         >
             <Typography variant="h5" mb={3} textAlign="center">
@@ -41,6 +40,7 @@ function Login() {
 
             <form onSubmit={handleSubmit}>
                 <TextField
+                    size='small'
                     fullWidth
                     label="Email"
                     type="email"
@@ -49,6 +49,7 @@ function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
+                    size='small'
                     fullWidth
                     label="Password"
                     type="password"
@@ -74,34 +75,39 @@ function Login() {
 
             <Divider sx={{ my: 3 }}>or</Divider>
 
-            <Stack spacing={1.5}>
-                <Button
-                    fullWidth
-                    startIcon={<GoogleIcon />}
-                    variant="outlined"
-                    bgcolor={theme.palette.background.default}
-                    onClick={() => handleSocialLogin("Google")}
-                >
-                    Login with Google
-                </Button>
-                <Button
-                    fullWidth
-                    startIcon={<GitHubIcon />}
-                    variant="outlined"
-                    bgcolor={theme.palette.background.default}
-                    onClick={() => handleSocialLogin("GitHub")}
-                >
-                    Login with GitHub
-                </Button>
-                <Button
-                    fullWidth
-                    startIcon={<FacebookIcon />}
-                    variant="outlined"
-                    bgcolor={theme.palette.background.default}
-                    onClick={() => handleSocialLogin("Facebook")}
-                >
-                    Login with Facebook
-                </Button>
+            <Stack
+                direction="row"
+                spacing={2}
+                justifyContent="center"
+            >
+                {[
+                    { name: 'Google', icon: <GoogleIcon /> },
+                    { name: 'GitHub', icon: <GitHubIcon /> },
+                    { name: 'Facebook', icon: <FacebookIcon /> },
+                ].map(({ name, icon }) => (
+                    <Tooltip key={name} title={`Sign up with ${name}`} arrow>
+                        <IconButton
+                            onClick={() => handleSocialSignup(name)}
+                            sx={{
+                                width: 44,
+                                height: 44,
+                                borderRadius: 2,
+                                bgcolor: 'action.hover',
+                                color: 'text.primary',
+                                transition: 'all 0.25s ease',
+                                '&:hover': {
+                                    bgcolor: 'action.selected',
+                                    transform: 'translateY(-2px)',
+                                },
+                                '&:active': {
+                                    transform: 'translateY(0)',
+                                },
+                            }}
+                        >
+                            {icon}
+                        </IconButton>
+                    </Tooltip>
+                ))}
             </Stack>
         </Box>
     );

@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import {
   AppBar, Box, IconButton, Toolbar, Typography,
   Avatar, Menu, MenuItem, Drawer, Paper, InputBase,
-  Divider, Button, Switch
+  Divider, Button, Switch,
+  TextField
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import {
@@ -25,6 +26,7 @@ import {
   updateSNavPosition,
   toggleThemeMode
 } from "../redux/settingSlice";
+import { plPL } from '@mui/material/locale';
 
 // Constants
 const sidenavColors = [
@@ -34,7 +36,6 @@ const sidenavColors = [
 ];
 
 function Navbar() {
-
 
   const dispatch = useDispatch();
   const navPosition = useSelector((state) => state.setting.defaultNavPosition);
@@ -69,7 +70,7 @@ function Navbar() {
     const storedTheme = localStorage.getItem('themeMode');
     const storedNavPos = localStorage.getItem('navPosition');
     if (storedTheme && storedTheme !== themeMode) {
-      dispatch(toggleThemeMode()); // Assumes toggle works symmetrically
+      dispatch(toggleThemeMode());
     }
     if (storedNavPos && storedNavPos !== navPosition) {
       dispatch(updateSNavPosition(storedNavPos));
@@ -81,15 +82,40 @@ function Navbar() {
     localStorage.setItem('navPosition', navPosition);
   }, [themeMode, navPosition]);
 
+  const handleShare = (platform) => {
+    if (!navigator.share) {
+      alert('Web Share API not supported in this browser.');
+      return;
+    }
+    const shareData = {
+      title: 'Material UI Admin Dashboard',
+      text: 'Check out this Material UI Admin Dashboard!',
+      url: window.location.href,
+    };
+    platform === 'twitter' ?
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`, '_blank')
+      :
+      navigator.share(shareData);
+  }
+
   return (
     <AppBar
-      position={["fixed", "static", "absolute", "relative", "sticky"].includes(navPosition) ? navPosition : "fixed"}
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      position="sticky"
+      elevation={0}
     >
-      <Toolbar sx={{ bgcolor: theme.palette.background.default }}>
+      <Toolbar
+        sx={{
+          background: theme.palette.background.default,
+          borderBottom: '1px solid',
+          borderColor: theme.palette.divider,
+        }}>
 
         {/* Left: Logo and Toggle Sidebar */}
-        <Box display="flex" alignItems="center" flexGrow={1}>
+        <Box
+          display="flex"
+          alignItems="center"
+          flexGrow={1}
+        >
           <IconButton
             onClick={() => dispatch(toggleSidebar())}
             edge="start"
@@ -117,173 +143,256 @@ function Navbar() {
               ml: 3,
               display: 'flex',
               alignItems: 'center',
-              borderRadius: 2,
-              width: 200,
-              p: 1,
-              bgcolor: theme.palette.background.default,
+              width: 220,
+              height: 40,
+              px: 1.5,
+              borderRadius: 4,
+              background: theme.palette.background.paper,
+              border: '1px solid',
+              borderColor: 'divider',
+              transition: 'all 0.25s ease',
+              '&:focus-within': {
+                borderColor: 'primary.main',
+                boxShadow: '0 0 0 2px rgba(25, 118, 210, 0.15)',
+              },
             }}
           >
-            <SearchIcon sx={{ ml: 1, mr: 1, color: '#fff' }} />
-            <InputBase
-              placeholder="Search here"
+            <SearchIcon
+              sx={{
+                mr: 1,
+                fontSize: 20,
+                color: 'text.secondary',
+              }}
+            />
+
+            <TextField
               value={searchTerm}
               onChange={handleSearchChange}
-              inputProps={{ 'aria-label': 'search' }}
-              sx={{ color: '#fff', flex: 1 }}
+              placeholder="Search…"
+              variant="standard"
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  fontSize: 14,
+                  color: 'text.primary',
+                },
+              }}
+              sx={{
+                flex: 1,
+              }}
             />
           </Paper>
+
         )}
 
         {/* Settings Button and Drawer */}
         <Box ml={4} display="flex" alignItems="center">
           <IconButton color='inherit' onClick={handleDrawerOpen} aria-label="open settings">
-            <SettingsIcon />
+            <SettingsIcon fontSize='small' sx={{
+            color: theme.palette.text.primary
+          }} />
           </IconButton>
 
           <Drawer
-            anchor='right'
+            anchor="right"
             open={drawerOpen}
             onClose={handleDrawerClose}
             ModalProps={{ keepMounted: true }}
             sx={{
               '& .MuiDrawer-paper': {
-                width: 'auto',
-                bgcolor: theme.palette.background.default,
-                color: 'inherit',
-                paddingTop: '64px',
-                px: 2,
-                mt: 2
-              }
+                width: 320,
+                background: theme.palette.background.default,
+                color: 'text.primary',
+                px: 3,
+                pt: 3,
+              },
             }}
           >
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant='h6'>Material UI Configurator</Typography>
-              <IconButton onClick={handleDrawerClose} sx={{ color: "inherit" }}>
+            {/* Header */}
+            <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+              <Typography variant="h6" fontWeight={600}>
+                UI Configurator
+              </Typography>
+              <IconButton onClick={handleDrawerClose} size="small">
                 <CloseIcon />
               </IconButton>
             </Box>
 
-            <Typography variant='body2' color='text.secondary'>See our dashboard options.</Typography>
-            <Divider sx={{ my: 2, borderColor: '#444' }} />
+            <Typography variant="body2" color="text.secondary" mb={3}>
+              Customize your dashboard appearance.
+            </Typography>
 
             {/* Sidenav Colors */}
-            <Typography variant="subtitle1" gutterBottom>Sidenav Colors</Typography>
-            <Box display="flex" flexWrap="wrap" gap={2}>
-              {sidenavColors.map((color, i) => (
-                <Box
-                  key={i}
-                  onClick={() => dispatch(updateSidebarButtonBgColor(color))}
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: '50%',
-                    backgroundColor: color,
-                    cursor: 'pointer',
-                    border: selectedSidebarColor === color ? '2px solid #00e676' : '2px solid transparent',
-                    '&:hover': { border: '2px solid #ffffff' }
-                  }}
-                />
-              ))}
-            </Box>
+            <Box mb={4}>
+              <Typography variant="subtitle2" fontWeight={600} mb={2}>
+                Sidenav Colors
+              </Typography>
 
-            {/* Sidenav Type */}
-            <Box mt={4}>
-              <Typography variant="subtitle1">Sidenav Type</Typography>
-              <Typography variant="body2" mb={2}>Choose between different sidenav types.</Typography>
-              <Box display="flex" gap={1}>
-                {['DARK', 'TRANSPARENT', 'WHITE'].map((type, i) => {
-                  let bgColor = "";
-                  if (type === 'TRANSPARENT') bgColor = "linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(173, 216, 230, 0.1))";
-                  if (type === 'WHITE') bgColor = "linear-gradient(120deg, #232526, #AAAFBA)";
-                  if (type === 'DARK') bgColor = "linear-gradient(to right,#010101, #0E0604)";
-                  return (
-                    <Button
-                      key={i}
-                      variant='outlined'
-                      onClick={() => dispatch(updateSidebarBgColor(bgColor))}
-                      sx={{
-                        background: bgColor,
-                        color: type === 'WHITE' ? '#000' : '#CCC',
-                        borderRadius: 2,
-                        boxShadow: "0 0 0.2rem lightseagreen",
-                        "&:hover": {
-                          boxShadow: "0 2px 0.2rem lightseagreen",
-                        },
-                      }}
-                    >
-                      {type}
-                    </Button>
-                  );
-                })}
+              <Box display="flex" gap={1.5} flexWrap="wrap">
+                {sidenavColors.map((color) => (
+                  <Box
+                    key={color}
+                    onClick={() => dispatch(updateSidebarButtonBgColor(color))}
+                    sx={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: '50%',
+                      bgcolor: color,
+                      cursor: 'pointer',
+                      border: selectedSidebarColor === color
+                        ? '2px solid'
+                        : '2px solid transparent',
+                      borderColor: selectedSidebarColor === color
+                        ? 'primary.main'
+                        : 'transparent',
+                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        transform: 'scale(1.1)',
+                      },
+                    }}
+                  />
+                ))}
               </Box>
             </Box>
 
-            {/* Navbar Fixed Toggle */}
-            <Divider sx={{ my: 2, borderColor: '#444' }} />
-            <Box display='flex' justifyContent="space-between" alignItems="center">
-              <Typography>Navbar Fixed</Typography>
+            {/* Sidenav Type */}
+            <Box mb={4}>
+              <Typography variant="subtitle2" fontWeight={600} mb={1}>
+                Sidenav Type
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mb={2}>
+                Choose between different sidenav types.
+              </Typography>
+
+              <Box display="flex" gap={1} flexWrap="wrap">
+                {[
+                  {
+                    type: 'DARK',
+                    bg: 'linear-gradient(135deg, #0B0F14, #141A21)',
+                    text: theme.palette.mode === 'dark' ? '#FFFFFF' : '#000',
+                  },
+                  {
+                    type: 'TRANSPARENT',
+                    bg: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))',
+                    text: 'text.primary',
+                  },
+                  {
+                    type: 'WHITE',
+                    bg: 'linear-gradient(135deg, #FFFFFF, #F1F3F5)',
+                    text: theme.palette.mode === 'dark' ? '#FFFFFF' : '#000',
+                  },
+                ].map(({ type, bg, text }) => (
+                  <Button
+                    key={type}
+                    variant="outlined"
+                    onClick={() => dispatch(updateSidebarBgColor(bg))}
+                    sx={{
+                      minWidth: 90,
+                      height: 40,
+                      bgcolor: bg,
+                      color: text,
+                      borderRadius: 2,
+                      borderColor: 'divider',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: 0.6,
+                      backdropFilter: type === 'TRANSPARENT' ? 'blur(6px)' : 'none',
+                      transition: 'all 0.25s ease',
+                      '&:hover': {
+                        bgcolor: bg,
+                        borderColor: 'primary.main',
+                        transform: 'translateY(-1px)',
+                      },
+                    }}
+                  >
+                    {type}
+                  </Button>
+                ))}
+              </Box>
+            </Box>
+
+            <Divider sx={{ mb: 3 }} />
+
+            {/* Navbar Fixed */}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center">
+              <Typography variant="body2" fontWeight={500}>
+                Navbar Fixed
+              </Typography>
               <Switch
                 checked={isNavbarFixed}
                 onChange={() =>
-                  dispatch(updateSNavPosition(isNavbarFixed ? "static" : "fixed"))
+                  dispatch(updateSNavPosition(isNavbarFixed ? 'static' : 'fixed'))
                 }
                 color="success"
-                sx={{
-                  '& .MuiSwitch-switchBase.Mui-checked': {
-                    color: '#00e676',
-                  },
-                  '& .MuiSwitch-track': {
-                    backgroundColor: '#555',
-                  }
-                }}
               />
             </Box>
 
-            {/* Theme Toggle */}
-            <Box display='flex' justifyContent="space-between" alignItems="center" mt={2}>
-              <Typography>Reading Mode</Typography>
+            {/* Theme Mode */}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={4}
+            >
+              <Typography variant="body2" fontWeight={500}>
+                Reading Mode
+              </Typography>
               <Switch
                 checked={themeMode === 'dark'}
                 onChange={() => dispatch(toggleThemeMode())}
                 color="success"
-                sx={{
-                  '& .MuiSwitch-switchBase.Mui-checked': {
-                    color: '#00e676',
-                  },
-                  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                    backgroundColor: '#00e676',
-                  },
-                  '& .MuiSwitch-track': {
-                    backgroundColor: '#555',
-                  },
-                }}
               />
             </Box>
 
+            <Divider sx={{ mb: 4 }} />
+
             {/* Share Section */}
-            <Box textAlign="center" mt={8}>
-              <Typography variant="subtitle1" gutterBottom>Thank you for sharing!</Typography>
-              <Box display="flex" justifyContent="center" gap={1}>
-                <Button variant='outlined' startIcon={<XIcon />} sx={{
-                  bgcolor: "#000", color: "inherit", borderRadius: 2,
-                  boxShadow: "0 0 0.2rem lightseagreen", "&:hover": {
-                    boxShadow: "0 2px 0.2rem lightseagreen"
-                  }
-                }}>TWITTER</Button>
-                <Button variant='outlined' startIcon={<ShareIcon />} sx={{
-                  bgcolor: "#000", color: "inherit", borderRadius: 2,
-                  boxShadow: "0 0 0.2rem lightseagreen", "&:hover": {
-                    boxShadow: "0 2px 0.2rem lightseagreen"
-                  }
-                }}>SHARE</Button>
+            <Box textAlign="center">
+              <Typography variant="subtitle2" fontWeight={600} mb={2}>
+                Thank you for sharing!
+              </Typography>
+              <Box display="flex" justifyContent="center" gap={2}>
+                {[{ icon: <XIcon fontSize="small" />, label: 'twitter' },
+                { icon: <ShareIcon fontSize="small" />, label: 'share' }].map(({ icon, label }) => (
+                  <IconButton
+                    key={label}
+                    onClick={() => handleShare(label)}
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 2,
+                      bgcolor: 'background.paper',
+                      color: 'text.primary',
+                      border: '1px solid',
+                      borderColor: 'divider',
+                      transition: 'all 0.25s ease',
+                      '&:hover': {
+                        bgcolor: 'action.hover',
+                        borderColor: 'primary.main',
+                        transform: 'translateY(-2px)',
+                      },
+                      '&:active': {
+                        transform: 'translateY(0)',
+                      },
+                    }}
+                  >
+                    {icon}
+                  </IconButton>
+                ))}
               </Box>
+
             </Box>
           </Drawer>
         </Box>
 
         {/* Notifications */}
         <IconButton onClick={handleOpenNotif} color="inherit">
-          <NotificationsIcon />
+          <NotificationsIcon fontSize='small' sx={{
+            color: theme.palette.text.primary
+          }} />
         </IconButton>
         <Menu
           anchorEl={anchorNotif}
@@ -291,42 +400,104 @@ function Navbar() {
           onClose={handleCloseNotif}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          PaperProps={{
+            sx: {
+              background: theme.palette.background.paper,
+              borderRadius: 2,
+              p: 1
+            }
+          }}
         >
-          <MenuItem onClick={handleCloseNotif}><MessageIcon sx={{ mr: 1 }} /> Check Messages</MenuItem>
-          <MenuItem onClick={handleCloseNotif}><PodcastsIcon sx={{ mr: 1 }} /> Manage Podcasts</MenuItem>
-          <MenuItem onClick={handleCloseNotif}><ShoppingCartIcon sx={{ mr: 1 }} /> Payment Completed</MenuItem>
+          <MenuItem
+            onClick={handleCloseNotif}
+            sx={{
+              borderRadius: 2,
+              "&:hover": {
+                background: theme.palette.action.hover
+              }
+            }}
+          >
+            <MessageIcon
+              fontSize='small'
+              sx={{ mr: 1 }}
+            />
+            Check Messages
+          </MenuItem>
+          <MenuItem
+            onClick={handleCloseNotif}
+            sx={{
+              borderRadius: 2,
+              "&:hover": {
+                background: theme.palette.action.hover
+              }
+            }}
+          >
+            <PodcastsIcon
+              fontSize='small'
+              sx={{ mr: 1 }}
+            />
+            Manage Podcasts
+          </MenuItem>
+          <MenuItem
+            onClick={handleCloseNotif}
+            sx={{
+              borderRadius: 2,
+              "&:hover": {
+                background: theme.palette.action.hover
+              }
+            }}
+          >
+            <ShoppingCartIcon
+              fontSize='small'
+              sx={{ mr: 1 }}
+            />
+            Payment Completed
+          </MenuItem>
         </Menu>
 
         {/* User Avatar */}
-        <IconButton onClick={handleOpenUserMenu}>
-          <Avatar
-            alt="User"
-            src="https://avatars.githubusercontent.com/u/83676505?v=4"
-            sx={{ width: 40, height: 40 }}
-          />
-        </IconButton>
+        <Avatar
+          onClick={handleOpenUserMenu}
+          alt="User"
+          src='/developerImg.png'
+          sx={{
+            width: 35,
+            height: 35,
+            cursor: 'pointer',
+            ml: 1,
+            "&:hover": { opacity: 0.8 }
+          }}
+        />
+
         <Menu
           anchorEl={anchorUser}
           open={Boolean(anchorUser)}
           onClose={handleCloseUserMenu}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          PaperProps={{
+            sx: {
+              background: theme.palette.background.paper,
+              borderRadius: 2,
+              p: 1
+            }
+          }}
         >
           <MenuItem
             onClick={handleCloseUserMenu}
             component={NavLink}
             to="/profile"
-            sx={{ textDecoration: "none", gap:1}}> {<Person2Icon />} Profile</MenuItem>
+            sx={{ textDecoration: "none", gap: 1, borderRadius: 2 }}> {<Person2Icon fontSize='small' />} Profile</MenuItem>
           <MenuItem
             onClick={handleCloseUserMenu}
             component={NavLink}
             to="/setting"
-            sx={{ textDecoration: "none", gap:1 }}> {<SettingsIcon />} Settings</MenuItem>
+            sx={{ textDecoration: "none", gap: 1, borderRadius: 2 }}> {<SettingsIcon fontSize='small' />} Settings</MenuItem>
           <MenuItem
             onClick={handleCloseUserMenu}
             component={NavLink}
             to="/logout"
-            sx={{ textDecoration: "none", gap:1 }}> {<LogoutIcon />} Logout</MenuItem>
+            sx={{ textDecoration: "none", gap: 1, borderRadius: 2 }}> {<LogoutIcon fontSize='small' />} Logout</MenuItem>
         </Menu>
 
       </Toolbar>

@@ -49,12 +49,10 @@ const OrdersOverview = () => {
         <Box
             sx={{
                 p: 3,
-                borderRadius: 4,
-                bgcolor: theme.palette.background.default,
-                boxShadow: 3,
+                borderRadius: 3,
+                border: `1px solid ${theme.palette.divider}`,
                 transition: "min-height 0.3s ease",
                 minHeight: "100%",
-                boxShadow: " 0 0 2px #ccc",
             }}
         >
             <Typography variant="h6" gutterBottom>

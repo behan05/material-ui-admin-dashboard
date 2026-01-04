@@ -13,10 +13,9 @@ const PageNotFound = () => {
       alignItems="center"
       textAlign="center"
       sx={{
-        background: 'linear-gradient(to right, #1e3c72, #2a5298)',
+        background: 'linear-gradient(to right, #280d4bff, #982a80ff)',
         color: '#fff',
-        // p: 3,
-        mt: 2.5
+        borderRadius: 10
       }}
     >
       <Typography variant="h1" sx={{ fontSize: '8rem', fontWeight: 'bold' }}>

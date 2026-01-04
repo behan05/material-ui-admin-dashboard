@@ -59,7 +59,7 @@ const Profile = () => {
             sx={{
               p: 3,
               borderRadius: 4,
-              bgcolor: theme.palette.background.default,
+              background: theme.palette.background.paper,
               boxShadow: 4
             }}
           >
@@ -94,13 +94,35 @@ const Profile = () => {
 
               {/* Action Buttons */}
               <Grid item xs display="flex" gap={2} justifyContent="flex-end">
-                <Button variant="outlined" color="primary" sx={theme.palette.background.default} startIcon={<HomeIcon />}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{
+                    bgcolor: theme.palette.background.default,
+                    color: theme.palette.text.primary,
+                  }}
+                  startIcon={<HomeIcon />}
+                >
                   App
                 </Button>
-                <Button variant="outlined" sx={theme.palette.background.default} color="primary" startIcon={<MessageIcon />}>
+                <Button
+                  variant="outlined"
+                  sx={{
+                    bgcolor: theme.palette.background.default,
+                    color: theme.palette.text.primary,
+                  }}
+                  color="primary"
+                  startIcon={<MessageIcon />}>
                   Message
                 </Button>
-                <Button variant="outlined" sx={theme.palette.background.default} color="primary" startIcon={<SettingsIcon />}>
+                <Button
+                  variant="outlined"
+                  sx={{
+                    bgcolor: theme.palette.background.default,
+                    color: theme.palette.text.primary,
+                  }}
+                  color="primary"
+                  startIcon={<SettingsIcon />}>
                   Settings
                 </Button>
               </Grid>

@@ -54,7 +54,6 @@ function StatsCard() {
             {stats.map((stat, i) => {
                 return (
                     <Box
-                        bgcolor={theme.palette.background.default}
                         mt={2} p={1} key={i}
                         display="flex"
                         justifyContent="space-between"
@@ -62,7 +61,7 @@ function StatsCard() {
                             flex: `1 1 ${isSmallScreen ? "100%" : "250px"}`,
                             minHeight: 140,
                             borderRadius: 3,
-                            boxShadow: " 0 0 2px #ccc",
+                            border: `1px solid ${theme.palette.divider}`
                         }}>
 
                         <Box>

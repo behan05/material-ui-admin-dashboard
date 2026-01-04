@@ -69,11 +69,10 @@ function Notifications() {
     return (
         <React.Fragment>
             <Box p={2} sx={{
-                maxWidth: 1200,
+                maxWidth: 1000,
                 minWidth: 380,
                 height: "auto",
-                bgcolor: theme.palette.background.default,
-                boxShadow: "0 0 5px #fff",
+                bgcolor: theme.palette.background.paper,
                 margin: "auto",
                 mt: 3,
                 borderRadius: 3,
@@ -99,7 +98,7 @@ function Notifications() {
                             borderRadius: 2,
 
                             "&:hover": {
-                                boxShadow: "0 0 10px yellow"
+                                boxShadow: "0 0 2px"
                             }
                         }}
                         >
@@ -111,11 +110,10 @@ function Notifications() {
             </Box >
 
             <Box p={2} sx={{
-                maxWidth: 1200,
+                maxWidth: 1000,
                 minWidth: 380,
                 height: "auto",
-                bgcolor: theme.palette.background.default,
-                boxShadow: "0 0 5px #fff",
+                bgcolor: theme.palette.background.paper,
                 margin: "auto",
                 mt: 3,
                 borderRadius: 3,

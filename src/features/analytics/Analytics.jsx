@@ -6,11 +6,11 @@ import { Box } from '@mui/material';
 function Analytics() {
 
     React.useEffect(() => {
-        document.title = Analytics
+        document.title = 'Admin / Analytics';
     }, []);
 
     return (
-        <Box pt={6}>
+        <Box sx={{ minWidth: "100%", height: "auto", flexGrow: 1, p: 1, display: "flex", flexDirection: "column", gap: 4 }} >
             <StatsCard />
             <ChartBox />
         </Box>

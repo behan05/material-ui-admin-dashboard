@@ -35,13 +35,13 @@ function ProfileInformation() {
           <strong>Full Name:</strong> Behan Kumar
         </Typography>
         <Typography variant="body2" color={theme.palette.text.primary}>
-          <strong>Mobile:</strong> (+91) 896 901 5583
+          <strong>Mobile:</strong> (+91) 896 xxx xxxx
         </Typography>
         <Typography variant="body2" color={theme.palette.text.primary}>
-          <strong>Email:</strong> behan@google.com
+          <strong>Email:</strong> behan@xxxx.com
         </Typography>
         <Typography variant="body2" color={theme.palette.text.primary}>
-          <strong>Location:</strong> INDIA / Punjub
+          <strong>Location:</strong> India / new delhi
         </Typography>
 
         <Box display="flex" alignItems={"center"}>

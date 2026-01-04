@@ -86,12 +86,24 @@ const Tables = () => {
     <React.Fragment>
       <Box p={3}>
         {/* Table Heading */}
-        <Typography variant="h6" p={2} bgcolor={"#0f5aa9"} color="#fff" borderRadius={1}>
+        <Typography
+          variant="h6"
+          p={2}
+          bgcolor={theme.palette.divider}
+          color={theme.palette.text.primary}
+          borderRadius={2}
+        >
           Authors Table
         </Typography>
 
         {/* Authors Table */}
-        <TableContainer sx={{ mt: 1, boxShadow: 5, bgcolor: theme.palette.background.default,borderRadius: 3 }}>
+        <TableContainer
+          sx={{
+            mt: 1,
+            boxShadow: 5,
+            bgcolor: theme.palette.background.paper,
+            borderRadius: 3
+          }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -154,7 +166,14 @@ const Tables = () => {
       <Box p={3}>
 
         {/* Projects Table */}
-        <Typography variant="h6" p={2} mb={1} bgcolor={"#0f5aa9"} color="#fff" borderRadius={1}>
+        <Typography
+          variant="h6"
+          p={2}
+          mb={1}
+          bgcolor={theme.palette.divider}
+          color={theme.palette.text.primary}
+          borderRadius={2}
+        >
           Projects Table
         </Typography>
 

@@ -6,8 +6,7 @@ function Logs() {
     const theme = useTheme();
     return (
         <Box p={3} sx={{
-            bgcolor: theme.palette.background.default,
-            boxShadow: "0 0 5px #ccc",
+            bgcolor: theme.palette.background.paper,
             mt: 4,
             overflowX: "auto",
             borderRadius: 3
