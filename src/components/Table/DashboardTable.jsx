@@ -53,7 +53,7 @@ const DashboardTable = ({ title = "Recent Projects", data = [] }) => {
             p: 2,
             borderRadius: 3,
             border: `1px solid ${theme.palette.divider}`,
-            background: theme.palette.background.paper
+            background: theme.palette.background.default
         }}>
             <Box
                 display="flex"
